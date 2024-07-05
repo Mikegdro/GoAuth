@@ -20,7 +20,33 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	mux.HandleFunc("/websocket", s.websocketHandler)
 
+	mux.HandleFunc("/auth", s.authenticateUserHandler)
+
 	return mux
+}
+
+type AuthBody struct {
+	User string
+	Password string
+}
+
+func (s *Server) authenticateUserHandler(w http.ResponseWriter, r *http.Request) {
+	
+	var data AuthBody
+
+	// Retrieve info from the request
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("%+v", data)
+
+	
+	// Access the database and check the credentials
+
+	// Return response
+
 }
 
 func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
